@@ -1,6 +1,6 @@
 # Aperture & defocus
 
-Interactive, dependency-free geometric-optics teaching demo. Open index.html directly or serve this folder. Select an asymmetric aperture, move the observation plane through focus, rotate the aperture, or animate a sweep. A comparison panel shows equal defocus on the opposite side.
+Interactive, dependency-free geometric-optics teaching demo. Open index.html directly or serve this folder. Select an asymmetric aperture, move the observation plane through focus, rotate the aperture, or animate a sweep. Source options: point, finite circle, square, F, and Hello Kitty face. Extended-source images sum uniformly sampled incoherent geometric rays using r(t)=(1-t)a-t u, with fixed source size (0.65 of the shape coordinates), unit negative image magnification, and a one-pixel reconstruction. Brightness is normalized per frame.
 
 For an on-axis ideal image at z_i and aperture/exit pupil at z=0, transverse ray coordinates obey r(z) = (1-z/z_i) r_aperture. The sign change produces a 180-degree rotation. Both transverse panels use identical fixed axes. Intensity, diffraction and aberrations are not simulated; the focus dot is only a visible marker.
 
