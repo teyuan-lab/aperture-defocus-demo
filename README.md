@@ -11,3 +11,5 @@ Source size is adjustable from 0.10 to 1.20 aperture-coordinate units (disabled 
 Object distance is adjustable from 2f to 5f. Image distance d_i/f=d_o/(d_o-f), magnification m=-f/(d_o-f). The source term in each ray and image is scaled by the corresponding magnification; z/z_i remains 0 to 2.
 
 Updated ranges: source size 0.01–1.20 (step 0.01); observation and animation 0–4 image distances. Ray diagram extends to 4 image distances.
+
+Both transverse panels use a fixed display scale; the aperture is white and does not resize with observation distance. Large defocused footprints may extend beyond the frame and are cropped, rather than automatically zoomed.
