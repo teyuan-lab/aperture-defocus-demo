@@ -17,16 +17,16 @@ function sampleMask(kind){
  for(let y=0;y<160;y+=2)for(let x=0;x<160;x+=2)if(data[(y*160+x)*4+3]>127)points.push([x-80,y-80]);sourceCache.set(kind,points);return points;
 }
 function renderSource(z,angle){
- const kind=$('source').value,point=kind==='point';
+ const kind=$('source').value,point=kind==='point',size=+$('sourceSize').value; $('sourceSizeValue').textContent=point?'Point (zero extent)':size.toFixed(2)+'× aperture coordinate scale'; $('sourceSize').disabled=point;
  if(point){$('sourcePreview').innerHTML=screen(0,0);return}
- const preview=sourceMask(kind);preview.style='height:100px;width:100px;max-height:100%;object-fit:contain';preview.setAttribute('aria-label','Selected source shape');$('sourcePreview').replaceChildren(preview);
- const src=sampleMask(kind),pupil=sampleMask($('shape').value),canvas=document.createElement('canvas');canvas.width=240;canvas.height=200;canvas.setAttribute('role','img');canvas.setAttribute('aria-label','Geometric image of extended source');canvas.style='width:100%;height:100%;object-fit:contain';const c=canvas.getContext('2d'),bins=new Float32Array(48000),r=angle*Math.PI/180,co=Math.cos(r),si=Math.sin(r),s=1-z;
- if(Math.abs(s)<1e-8){c.fillStyle='#0d182a';c.fillRect(0,0,240,200);c.save();c.translate(120,100);c.scale(-.65,-.65);c.drawImage(sourceMask(kind),-80,-80);c.restore();$('observation').replaceChildren(canvas);$('status').textContent='At focus: a sharp, inverted image of the extended source.';$('footprint').textContent='Aperture defocus scale: 0.00×. Source-image scale: −1.00× (unit negative magnification).';return}
+ const preview=sourceMask(kind);preview.style=`height:${90*size/1.2}px;width:${90*size/1.2}px;object-fit:contain`;preview.setAttribute('aria-label','Selected source shape');$('sourcePreview').replaceChildren(preview);
+ const src=sampleMask(kind),pupil=sampleMask($('shape').value),canvas=document.createElement('canvas');canvas.width=600;canvas.height=500;canvas.setAttribute('role','img');canvas.setAttribute('aria-label','Geometric image of extended source');canvas.style='width:100%;height:100%;object-fit:contain';const c=canvas.getContext('2d'),bins=new Float32Array(300000),r=angle*Math.PI/180,co=Math.cos(r),si=Math.sin(r),s=1-z;
+ if(Math.abs(s)<1e-8){c.fillStyle='#0d182a';c.fillRect(0,0,600,500);c.save();c.translate(300,250);c.scale(-size,-size);c.drawImage(sourceMask(kind),-80,-80);c.restore();$('observation').replaceChildren(canvas);$('status').textContent='At focus: a sharp, inverted image of the extended source.';$('footprint').textContent='Aperture defocus scale: 0.00×. Source-image scale: −1.00× (unit negative magnification).';return}
  let seed=246813579;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
- for(let i=0;i<160000;i++){const u=src[Math.floor(random()*src.length)],a=pupil[Math.floor(random()*pupil.length)];const x=Math.round(120+s*(co*a[0]-si*a[1])-z*.65*u[0]),y=Math.round(100+s*(si*a[0]+co*a[1])-z*.65*u[1]);if(x>=0&&x<240&&y>=0&&y<200)bins[y*240+x]++}
+ for(let i=0;i<160000;i++){const u=src[Math.floor(random()*src.length)],a=pupil[Math.floor(random()*pupil.length)];const x=Math.round(300+s*(co*a[0]-si*a[1])-z*size*u[0]),y=Math.round(250+s*(si*a[0]+co*a[1])-z*size*u[1]);if(x>=0&&x<600&&y>=0&&y<500)bins[y*600+x]++}
  const smooth=new Float32Array(bins.length);let peak=0;
- for(let y=1;y<199;y++)for(let x=1;x<239;x++){let v=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)v+=bins[(y+dy)*240+x+dx];smooth[y*240+x]=v;peak=Math.max(peak,v)}
- const img=c.createImageData(240,200);for(let i=0;i<bins.length;i++){const v=peak?Math.pow(smooth[i]/peak,.65):0;img.data[i*4]=13+v*121;img.data[i*4+1]=24+v*157;img.data[i*4+2]=42+v*213;img.data[i*4+3]=255}c.putImageData(img,0,0);$('observation').replaceChildren(canvas);
+ for(let y=1;y<499;y++)for(let x=1;x<599;x++){let v=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)v+=bins[(y+dy)*600+x+dx];smooth[y*600+x]=v;peak=Math.max(peak,v)}
+ const img=c.createImageData(600,500);for(let i=0;i<bins.length;i++){const v=peak?Math.pow(smooth[i]/peak,.65):0;img.data[i*4]=13+v*121;img.data[i*4+1]=24+v*157;img.data[i*4+2]=42+v*213;img.data[i*4+3]=255}c.putImageData(img,0,0);$('observation').replaceChildren(canvas);
  $('status').textContent=Math.abs(s)<1e-8?'At focus: a sharp, inverted image of the extended source.':'Extended source: overlapping aperture footprints blur the source image. Each point’s aperture footprint rotates 180° across focus.';
  $('footprint').textContent=`Aperture defocus scale: ${s.toFixed(2)}×. Source-image scale: ${(-z).toFixed(2)}× (unit negative magnification at focus).`;
 }

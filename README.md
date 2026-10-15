@@ -5,3 +5,5 @@ Interactive, dependency-free geometric-optics teaching demo. Open index.html dir
 For an on-axis ideal image at z_i and aperture/exit pupil at z=0, transverse ray coordinates obey r(z) = (1-z/z_i) r_aperture. The sign change produces a 180-degree rotation. Both transverse panels use identical fixed axes. Intensity, diffraction and aberrations are not simulated; the focus dot is only a visible marker.
 
 GitHub Pages: deploy from main, /(root). No dependencies or build needed.
+
+Source size is adjustable from 0.10 to 1.20 aperture-coordinate units (disabled for an ideal point). Observation position and animation cover z/z_i=0 to 2. The ray plot includes the source at -z_i, thin lens at 0 and image at +z_i, corresponding to a 2f-to-2f imaging system. Transverse views use a fixed field of view across sizes and distances.
