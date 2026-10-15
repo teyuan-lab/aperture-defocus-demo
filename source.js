@@ -19,8 +19,9 @@ function sampleMask(kind){
 function renderSource(z,angle){
  const kind=$('source').value,point=kind==='point';
  if(point){$('sourcePreview').innerHTML=screen(0,0);return}
- const preview=sourceMask(kind);preview.style='height:100%;width:auto';preview.setAttribute('aria-label','Selected source shape');$('sourcePreview').replaceChildren(preview);
+ const preview=sourceMask(kind);preview.style='height:100px;width:100px;max-height:100%;object-fit:contain';preview.setAttribute('aria-label','Selected source shape');$('sourcePreview').replaceChildren(preview);
  const src=sampleMask(kind),pupil=sampleMask($('shape').value),canvas=document.createElement('canvas');canvas.width=240;canvas.height=200;canvas.setAttribute('role','img');canvas.setAttribute('aria-label','Geometric image of extended source');canvas.style='width:100%;height:100%;object-fit:contain';const c=canvas.getContext('2d'),bins=new Float32Array(48000),r=angle*Math.PI/180,co=Math.cos(r),si=Math.sin(r),s=1-z;
+ if(Math.abs(s)<1e-8){c.fillStyle='#0d182a';c.fillRect(0,0,240,200);c.save();c.translate(120,100);c.scale(-.65,-.65);c.drawImage(sourceMask(kind),-80,-80);c.restore();$('observation').replaceChildren(canvas);$('status').textContent='At focus: a sharp, inverted image of the extended source.';$('footprint').textContent='Aperture defocus scale: 0.00×. Source-image scale: −1.00× (unit negative magnification).';return}
  let seed=246813579;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
  for(let i=0;i<160000;i++){const u=src[Math.floor(random()*src.length)],a=pupil[Math.floor(random()*pupil.length)];const x=Math.round(120+s*(co*a[0]-si*a[1])-z*.65*u[0]),y=Math.round(100+s*(si*a[0]+co*a[1])-z*.65*u[1]);if(x>=0&&x<240&&y>=0&&y<200)bins[y*240+x]++}
  const smooth=new Float32Array(bins.length);let peak=0;
