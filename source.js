@@ -6,7 +6,7 @@ function sourceMask(kind){
  if(kind==='kitty'){
   g.globalCompositeOperation='destination-out';g.lineWidth=3;
   for(const [x,y,rx,ry] of [[-25,6,5,8],[25,6,5,8],[0,21,7,5]]){g.beginPath();g.ellipse(x,y,rx,ry,0,0,Math.PI*2);g.fill()}
-  g.globalCompositeOperation='source-over';g.strokeStyle='#ffffff';
+  g.globalCompositeOperation='destination-out';g.strokeStyle='#000000';
   for(const side of [-1,1])for(const y of [-4,12,28]){g.beginPath();g.moveTo(side*44,y);g.lineTo(side*69,y+(y-12)*.3);g.stroke()}
   g.globalCompositeOperation='source-over';g.fillStyle='#ff91bb';g.fill(new Path2D('M 28 -42 L 14 -60 L 12 -29 Z M 28 -42 L 49 -59 L 49 -26 Z'));g.beginPath();g.arc(28,-42,6,0,Math.PI*2);g.fill();
  }
