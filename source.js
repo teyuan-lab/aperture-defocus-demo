@@ -2,7 +2,7 @@
 const kittyPath='M -60 -28 L -61 -65 L -28 -48 Q 0 -56 28 -48 L 61 -65 L 60 -28 Q 82 -5 66 30 Q 52 56 0 56 Q -52 56 -66 30 Q -82 -5 -60 -28 Z';
 const sourceCache=new Map();
 function sourceMask(kind){
- const c=document.createElement('canvas');c.width=160;c.height=160;const g=c.getContext('2d');g.translate(80,80);g.fillStyle='#86b5ff';g.fill(new Path2D(kind==='kitty'?kittyPath:shapes[kind]));
+ const c=document.createElement('canvas');c.width=160;c.height=160;const g=c.getContext('2d');g.translate(80,80);g.fillStyle=kind==='kitty'?'#ffe6a3':'#86b5ff';g.fill(new Path2D(kind==='kitty'?kittyPath:shapes[kind]));
  if(kind==='kitty'){
   g.globalCompositeOperation='destination-out';g.lineWidth=3;
   for(const [x,y,rx,ry] of [[-25,6,5,8],[25,6,5,8],[0,21,7,5]]){g.beginPath();g.ellipse(x,y,rx,ry,0,0,Math.PI*2);g.fill()}
